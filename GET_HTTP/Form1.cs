@@ -36,16 +36,19 @@ namespace GET_HTTP
 
         public void req()
         {
-            WebRequest wrGETURL;
-            wrGETURL = WebRequest.Create(URL);
+            HttpWebRequest myHttpWebRequest = (HttpWebRequest) WebRequest.Create(URL);
+            myHttpWebRequest.UserAgent = "C# Client";
 
-            Stream objStream;
-            objStream = wrGETURL.GetResponse().GetResponseStream();
+            HttpWebResponse myHttpResp = (HttpWebResponse)myHttpWebRequest.GetResponse();
 
-            StreamReader objReader = new StreamReader(objStream);
-            responseFromServer = objReader.ReadToEnd();
+            Stream streamResp = myHttpResp.GetResponseStream();
+            StreamReader strRead = new StreamReader(streamResp);
 
-            objReader.Close();
+            responseFromServer = strRead.ReadToEnd();
+
+            strRead.Close();
+            streamResp.Close();
+            myHttpResp.Close();
         }
     }
 }
