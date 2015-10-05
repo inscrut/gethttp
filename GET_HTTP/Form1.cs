@@ -16,8 +16,6 @@ namespace GET_HTTP
     public partial class Form1 : Form
     {
         public string URL = "http://vk.com/";
-        public string ans = "";
-        public string responseFromServer = "";
 
         public Form1()
         {
@@ -28,15 +26,12 @@ namespace GET_HTTP
         {
             URL = textBox1.Text;
             textBox2.Text = textBox2.Text + URL + "\r\n";
-
-            req();
-
-            textBox2.Text = textBox2.Text + responseFromServer + "\r\n\r\n";
+            textBox2.Text = textBox2.Text + req(URL) +"\r\n\r\n";
         }
 
-        public void req()
+        public string req(string url)
         {
-            HttpWebRequest myHttpWebRequest = (HttpWebRequest) WebRequest.Create(URL);
+            HttpWebRequest myHttpWebRequest = (HttpWebRequest) WebRequest.Create(url);
             myHttpWebRequest.UserAgent = "C# Client";
 
             HttpWebResponse myHttpResp = (HttpWebResponse)myHttpWebRequest.GetResponse();
@@ -44,11 +39,13 @@ namespace GET_HTTP
             Stream streamResp = myHttpResp.GetResponseStream();
             StreamReader strRead = new StreamReader(streamResp);
 
-            responseFromServer = strRead.ReadToEnd();
+            string responseFromServer = strRead.ReadToEnd();
 
             strRead.Close();
             streamResp.Close();
             myHttpResp.Close();
+
+            return responseFromServer;
         }
     }
 }
