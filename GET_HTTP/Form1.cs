@@ -15,10 +15,9 @@ namespace GET_HTTP
 {
     public partial class Form1 : Form
     {
-        public string URL = "http://vk.com";
+        public string URL = "http://vk.com/";
         public string ans = "";
-
-        //Thread thread = new Thread(Req);
+        public string responseFromServer = "";
 
         public Form1()
         {
@@ -27,10 +26,16 @@ namespace GET_HTTP
 
         private void button1_Click(object sender, EventArgs e)
         {
-            //thread.Start();
             URL = textBox1.Text;
             textBox2.Text = textBox2.Text + URL + "\r\n";
 
+            req();
+
+            textBox2.Text = textBox2.Text + responseFromServer + "\r\n\r\n";
+        }
+
+        public void req()
+        {
             WebRequest wrGETURL;
             wrGETURL = WebRequest.Create(URL);
 
@@ -38,9 +43,7 @@ namespace GET_HTTP
             objStream = wrGETURL.GetResponse().GetResponseStream();
 
             StreamReader objReader = new StreamReader(objStream);
-            string responseFromServer = objReader.ReadToEnd();
-
-            textBox2.Text = textBox2.Text + responseFromServer + "\r\n\r\n";
+            responseFromServer = objReader.ReadToEnd();
 
             objReader.Close();
         }
